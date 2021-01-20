@@ -5,6 +5,9 @@ export class AddForeignKey1611171849478 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
 
       await queryRunner.createForeignKey('appointments', new TableForeignKey({
+        /**
+         * Cria um relacionamento entre a tabela appointments e users
+         */
         name: 'appointmentProvider',
         columnNames: ['provider_id'],
         referencedColumnNames: ['id'],
@@ -16,7 +19,7 @@ export class AddForeignKey1611171849478 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-      await queryRunner.dropForeignKey('appointments', 'appointmentProvider');
+      await queryRunner.dropForeignKey('appointments', 'appointmentProvider'); //Deleta a chave estrangeira
     }
 
 }

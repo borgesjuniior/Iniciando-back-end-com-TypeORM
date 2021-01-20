@@ -16,6 +16,8 @@ usersRouter.post('/', async (req, res) => {
       password,
     });
 
+    //delete user.password; //Não mostra a senha na listagem de usuários
+
     res.json(user);
   } catch (err) {
 
