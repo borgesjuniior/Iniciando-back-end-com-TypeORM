@@ -1,4 +1,4 @@
-import {MigrationInterface, QueryRunner, Table} from "typeorm";
+import {MigrationInterface, QueryRunner, Table, TableForeignKey} from "typeorm";
 
 export class CreateUsers1611106710110 implements MigrationInterface {
 
@@ -8,7 +8,7 @@ export class CreateUsers1611106710110 implements MigrationInterface {
         name: 'users',
         columns: [{
           name: 'id',
-          type: 'varchar',
+          type: 'uuid',
           isPrimary: true,
           generationStrategy: 'uuid',
           default: 'uuid_generate_v4()',
@@ -40,6 +40,16 @@ export class CreateUsers1611106710110 implements MigrationInterface {
       ]
       })
     )
+
+    await queryRunner.createForeignKey('appointments', new TableForeignKey({
+      name: 'appointmentProvider',
+      columnNames: ['provider_id'],
+      referencedColumnNames: ['id'],
+      referencedTableName: 'users',
+      onDelete: 'SET NULL',
+      onUpdate: 'CASCADE'
+
+    }))
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
