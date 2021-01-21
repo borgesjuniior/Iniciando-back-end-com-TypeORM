@@ -1,6 +1,7 @@
 import User from '../models/User';
 import { getRepository } from 'typeorm';
 import { compare } from 'bcryptjs';
+import { sign } from 'jsonwebtoken';
 
 
 interface Request {
@@ -9,7 +10,7 @@ interface Request {
 }
 
 class AuthenticateUserSerice {
-    public async execute({ email, password }: Request): Promise<{ user: User }> {
+    public async execute({ email, password }: Request): Promise<{ user: User, token: string}> {
 
     const usersRepository = getRepository(User);
 
@@ -26,7 +27,15 @@ class AuthenticateUserSerice {
       throw new Error('Incorrect email/password combination.'); //Se a senha não bater com a do banco de dados retorna um erro.
     }
 
-    return { user };
+    const token =  sign({}, '123456', {
+      subject: user.id,
+      expiresIn: '1d',
+    });
+
+    return {
+      user,
+      token,
+    }
   }
 }
 
