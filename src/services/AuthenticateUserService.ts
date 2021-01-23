@@ -2,6 +2,7 @@ import User from '../models/User';
 import { getRepository } from 'typeorm';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
+import authConfig from '../config/auth';
 
 
 interface Request {
@@ -27,9 +28,11 @@ class AuthenticateUserSerice {
       throw new Error('Incorrect email/password combination.'); //Se a senha não bater com a do banco de dados retorna um erro.
     }
 
-    const token =  sign({}, '123456', {
+    const { secret, expiresIn } = authConfig.jwt;
+
+    const token =  sign({}, secret, {
       subject: user.id,
-      expiresIn: '1d',
+      expiresIn,
     });
 
     return {
