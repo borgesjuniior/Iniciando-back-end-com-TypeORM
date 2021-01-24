@@ -5,8 +5,8 @@ const sessionsRouter = Router();
 
 sessionsRouter.post('/', async (req, res) => {
   try {
-
     const { email, password } = req.body;
+
 
     const authenticateUser = new AuthenticateUserSerice;
 

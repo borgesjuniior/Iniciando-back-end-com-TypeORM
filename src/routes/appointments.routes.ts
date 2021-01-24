@@ -13,6 +13,7 @@ appointmentsRouter.use(ensureAuthenticaded);
 
 
 appointmentsRouter.get('/', async (req, res) => {
+ //console.log(req.user);
   const appointmentsRepository = getCustomRepository(AppointmentRepository);
   const appointments = await appointmentsRepository.find();
 
