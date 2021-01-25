@@ -14,7 +14,7 @@ export default function ensureAuthenticaded(req: Request , res: Response, next: 
   //Validação do token JWT
 
   const authHeader = req.headers.authorization;
-  console.log(authHeader)
+  console.log(authHeader);
 
   if(!authHeader) {
     throw new Error('JWT token is missing.');
