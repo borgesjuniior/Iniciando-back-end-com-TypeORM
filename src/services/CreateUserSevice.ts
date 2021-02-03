@@ -1,6 +1,7 @@
 import User from '../models/User';
 import { getRepository } from 'typeorm';
 import { hash } from 'bcryptjs';
+import AppError from '../error/AppError';
 
 interface Request {
   name: string,
@@ -19,7 +20,7 @@ class CreateUserService {
     });
 
     if(checkUserExists) {
-      throw new Error('Email address already used.') //Verifica se o email já existe no banco de dados
+      throw new AppError('Email address already used.') //Verifica se o email já existe no banco de dados
     };
 
     const hashedPassword = await hash(password, 8); //Salva a senha criptografada no banco de dados
