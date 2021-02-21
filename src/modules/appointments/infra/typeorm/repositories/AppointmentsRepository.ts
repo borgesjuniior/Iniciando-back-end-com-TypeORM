@@ -28,6 +28,10 @@ class AppointmentRepository implements IAppointmentRepository {
 
   }
 
+  public async find() {
+
+  }
+
 }
 
 export default AppointmentRepository;

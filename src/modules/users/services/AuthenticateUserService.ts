@@ -1,5 +1,5 @@
 import User from '../infra/typeorm/entities/User';
-import { getRepository } from 'typeorm';
+import IUsersRepository from '../repositories/IUsersRepository';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import authConfig from '@config/auth';
@@ -11,12 +11,16 @@ interface Request {
   password: string;
 }
 
-class AuthenticateUserSerice {
+class AuthenticateUserService {
+  private  usersRepository: IUsersRepository;
+
+  constructor(usersRepository: IUsersRepository) {
+    this.usersRepository = usersRepository;
+  }
+
     public async execute({ email, password }: Request): Promise<{ user: User, token: string}> {
 
-    const usersRepository = getRepository(User);
-
-    const user = await usersRepository.findOne({ where: { email } });
+    const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
       throw new AppError('Incorrect email/password combination.', 401); //Se o usuário não for encontrado no banco de dados ele retorna um erro.
@@ -43,4 +47,4 @@ class AuthenticateUserSerice {
   }
 }
 
-export default AuthenticateUserSerice;
+export default AuthenticateUserService;

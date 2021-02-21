@@ -1,7 +1,8 @@
-import User from '../infra/typeorm/entities/User';
-import { getRepository } from 'typeorm';
+
 import { hash } from 'bcryptjs';
+import IUsersRepository from '../repositories/IUsersRepository'
 import AppError from '@shared/errors/AppError';
+import User from '../infra/typeorm/entities/User';
 
 interface Request {
   name: string,
@@ -11,13 +12,16 @@ interface Request {
 
 
 class CreateUserService {
+
+  private  usersRepository: IUsersRepository;
+
+  constructor(usersRepository: IUsersRepository) {
+    this.usersRepository = usersRepository;
+  }
+
   public async execute({ name, email, password}: Request): Promise<User> {
 
-    const usersRepository = getRepository(User);
-
-    const checkUserExists = await usersRepository.findOne({
-      where: { email }
-    });
+    const checkUserExists = await this.usersRepository.findByEmail(email);
 
     if(checkUserExists) {
       throw new AppError('Email address already used.') //Verifica se o email já existe no banco de dados
@@ -25,13 +29,11 @@ class CreateUserService {
 
     const hashedPassword = await hash(password, 8); //Salva a senha criptografada no banco de dados
 
-    const user = usersRepository.create({
+    const user = await this.usersRepository.create({
       name,
       email,
       password: hashedPassword,
     });
-
-    await usersRepository.save(user);
 
     return user;
 

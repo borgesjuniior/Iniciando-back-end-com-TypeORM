@@ -9,9 +9,10 @@ interface Request {
 };
 
 class CreateAppointmentService {
-  constructor(
-    private appointmentsRepository: IAppointmentRepository
-  ) {
+  private  appointmentsRepository: IAppointmentRepository
+
+  constructor(appointmentsRepository: IAppointmentRepository) {
+    this.appointmentsRepository = appointmentsRepository
   }
 
   public async execute({ date, provider_id}: Request): Promise<Appointment> {
