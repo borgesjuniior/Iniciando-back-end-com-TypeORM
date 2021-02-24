@@ -28,6 +28,7 @@
     "pg": "^8.5.1",
     "reflect-metadata": "^0.1.13",
     "remove": "^0.1.5",
+    "tsyringe": "^4.4.0",
     "typeorm": "^0.2.30",
     "uuid": "^8.3.2",
     "uuidv4": "^6.2.6"
